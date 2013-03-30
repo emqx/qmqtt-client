@@ -23,19 +23,6 @@
       <string/>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="6" column="2" colspan="6">
-       <widget class="QTextEdit" name="payloadEdit"/>
-      </item>
-      <item row="1" column="7">
-       <widget class="QCheckBox" name="dupCheckBox"/>
-      </item>
-      <item row="1" column="6">
-       <widget class="QLabel" name="dupLabel">
-        <property name="text">
-         <string>Dup Flag:</string>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="2">
        <widget class="QComboBox" name="qOSComboBox">
         <item>
@@ -55,11 +42,19 @@
         </item>
        </widget>
       </item>
-      <item row="0" column="2" colspan="6">
-       <widget class="QLineEdit" name="topicLineEdit"/>
+      <item row="0" column="0">
+       <widget class="QLabel" name="topicLabel">
+        <property name="text">
+         <string>Topic(*):</string>
+        </property>
+       </widget>
       </item>
-      <item row="1" column="5">
-       <widget class="QCheckBox" name="retainCheckBox"/>
+      <item row="6" column="0">
+       <widget class="QLabel" name="messageLabel">
+        <property name="text">
+         <string>Message(*):</string>
+        </property>
+       </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="qOSLabel">
@@ -68,26 +63,21 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="messageLabel">
-        <property name="text">
-         <string>Message:</string>
-        </property>
-       </widget>
+      <item row="6" column="2" colspan="5">
+       <widget class="QTextEdit" name="payloadEdit"/>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="topicLabel">
-        <property name="text">
-         <string>Topic:</string>
-        </property>
-       </widget>
+      <item row="0" column="2" colspan="5">
+       <widget class="QLineEdit" name="topicLineEdit"/>
       </item>
-      <item row="1" column="4">
+      <item row="2" column="0">
        <widget class="QLabel" name="retainLabel">
         <property name="text">
          <string>Retain:</string>
         </property>
        </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QCheckBox" name="retainCheckBox"/>
       </item>
      </layout>
     </widget>
@@ -118,6 +108,13 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>topicLineEdit</tabstop>
+  <tabstop>qOSComboBox</tabstop>
+  <tabstop>retainCheckBox</tabstop>
+  <tabstop>payloadEdit</tabstop>
+  <tabstop>pubButton</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

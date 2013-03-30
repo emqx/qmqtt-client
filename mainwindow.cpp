@@ -71,7 +71,7 @@ void MainWindow::onMQTT_Connacked(quint8 ack)
         ackStatus = "Connection Refused: not authorized";
         break;
     }
-    log(tr("connacked: %1, <b>%2</b>").arg(ack).arg(ackStatus));
+    log(tr("connacked: %1, %2").arg(ack).arg(ackStatus));
 }
 void MainWindow::onMQTT_error(QAbstractSocket::SocketError err)
 {
@@ -140,7 +140,7 @@ void MainWindow::onMQTT_unsubacked(quint16 msgid)
 
 void MainWindow::onMQTT_Pong()
 {
-    log("pong");
+    log("pong received.");
 }
 
 void MainWindow::onMQTT_disconnected()
@@ -195,4 +195,7 @@ void MainWindow::log(const QString & msg)
     ui->logConsole->append(msg);
 }
 
-
+void MainWindow::on_action_Quit_triggered()
+{
+    qApp->quit();
+}
