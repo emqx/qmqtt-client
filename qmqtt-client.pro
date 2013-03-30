@@ -11,14 +11,26 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = qmqtt-client
 TEMPLATE = app
 
-DEPENDPATH += . /Users/erylee/WorkSpace/qmqtt
-INCLUDEPATH +=  /Users/erylee/WorkSpace/qmqtt
+DEPENDPATH += . ../qmqtt
+INCLUDEPATH +=  ../qmqtt
 
-LIBS+=  -L/Users/erylee/WorkSpace/qmqtt-build-debug -lqmqtt
+#NOTICE: add DYLD_LIBRARY_PATH to build environment.
+LIBS+=  -L../qmqtt-build-debug -lqmqtt
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    mainwindow.cpp \
+    connform.cpp \
+    pubform.cpp \
+    subform.cpp
         mainwindow.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    connform.h \
+    pubform.h \
+    subform.h \
+    mqttform.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    connform.ui \
+    pubform.ui \
+    subform.ui

@@ -1,15 +1,12 @@
-#include "mainwindow.h"
 #include <QApplication>
 
 #include "qmqtt.h"
+#include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    QMQTT::Client *client = new QMQTT::Client("localhost", 1883);
-    client->setClientId("DemoClient");
-    MainWindow w(client);
+    MainWindow w(new QMQTT::Client());
     w.show();
-    client->connect();
     return a.exec();
 }
