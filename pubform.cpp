@@ -7,6 +7,8 @@ PubForm::PubForm(QWidget *parent) :
 {
     ui->setupUi(this);
     onPublishReady();
+
+    ui->pubButton->setShortcut(QKeySequence(tr("Ctrl+P")));
 }
 
 PubForm::~PubForm()
@@ -24,4 +26,9 @@ void PubForm::onPublish()
 {
     QMQTT::Message msg(0, ui->topicLineEdit->text(), ui->payloadEdit->toPlainText().toUtf8());
     _client->publish(msg);
+}
+
+void PubForm::lineEditSetFocus()
+{
+    ui->topicLineEdit->setFocus();
 }

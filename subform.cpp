@@ -9,6 +9,22 @@ SubForm::SubForm(QWidget *parent) :
 {
     ui->setupUi(this);
     topics = new QMap<QString, QListWidgetItem *>();
+
+    // clicking listWidget item, loads it into topicLineEdit (for "quick" unsubscribing)
+    connect(ui->listWidget, &QListWidget::itemClicked, [&](QListWidgetItem * item) {ui->topicLineEdit->setText(item->text());});
+    ui->listWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+
+    // hitting Return in topicLineEdit, will subscribe or unsubscribe, if possible
+    connect(ui->topicLineEdit, &QLineEdit::returnPressed,
+            [&]()
+            {if (ui->subButton->isEnabled())
+                onSubscribe();
+             else if (ui->unsubButton->isEnabled())
+                onUnsubscribe();
+            });
+
+    ui->subButton->setShortcut(QKeySequence(tr("Ctrl+S")));
+    ui->unsubButton->setShortcut(QKeySequence(tr("Ctrl+N")));
 }
 
 SubForm::~SubForm()
@@ -31,6 +47,7 @@ void SubForm::onSubscribed(const QString &topic)
         topics->insert(topic, item);
         ui->listWidget->addItem(item);
     }
+    clearLineEdit();
 }
 
 void SubForm::onUnsubscribed(const QString &topic)
@@ -40,11 +57,12 @@ void SubForm::onUnsubscribed(const QString &topic)
         ui->listWidget->removeItemWidget(item);
         delete item;
     }
+    clearLineEdit();
 }
 
 void SubForm::onTopicInput(QString topic) {
-    ui->subButton->setEnabled(!topic.isEmpty());
-    ui->unsubButton->setEnabled(!topic.isEmpty());
+    ui->subButton->setEnabled(!topic.isEmpty()   && !topics->contains(topic));
+    ui->unsubButton->setEnabled(!topic.isEmpty() &&  topics->contains(topic));
 }
 
 void SubForm::onSubscribe()
@@ -59,4 +77,13 @@ void SubForm::onUnsubscribe()
 {
     QString topic = ui->topicLineEdit->text();
     _client->unsubscribe(topic);
+}
+
+void SubForm::clearLineEdit()
+{
+    ui->topicLineEdit->clear();
+    ui->subButton->setEnabled(false);
+    ui->unsubButton->setEnabled(false);
+    ui->topicLineEdit->setFocus();
+    ui->listWidget->clearSelection();
 }

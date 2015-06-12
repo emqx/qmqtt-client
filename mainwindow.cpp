@@ -165,6 +165,7 @@ void MainWindow::on_action_Subscribe_triggered()
     clearChecked();
     ui->action_Subscribe->setChecked(true);
     ui->stackedWidget->setCurrentWidget(ui->subForm);
+    ui->subForm->clearLineEdit(); // also sets focus to lineEdit
 }
 
 void MainWindow::on_action_Publish_triggered()
@@ -172,6 +173,7 @@ void MainWindow::on_action_Publish_triggered()
     clearChecked();
     ui->action_Publish->setChecked(true);
     ui->stackedWidget->setCurrentWidget(ui->pubForm);
+    ui->pubForm->lineEditSetFocus();
 }
 
 void MainWindow::on_action_About_triggered()

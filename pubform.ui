@@ -87,7 +87,7 @@
      <item>
       <widget class="QPushButton" name="pubButton">
        <property name="text">
-        <string>Publish</string>
+        <string>&amp;Publish</string>
        </property>
       </widget>
      </item>
