@@ -29,7 +29,7 @@ make
 cd qmqtt-client
 export LD_LIBRARY_PATH=~/path_to_qmqtt:$LD_LIBRARY_PATH
 
-# start an mqtt broker such as mosquitto
+# start an mqtt broker such as emqttd (or mosquitto)
 
 # run the qmqtt-client
 ./qmqtt-client
