@@ -61,8 +61,9 @@ void SubForm::onUnsubscribed(const QString &topic)
 }
 
 void SubForm::onTopicInput(QString topic) {
-    ui->subButton->setEnabled(!topic.isEmpty()   && !topics->contains(topic));
-    ui->unsubButton->setEnabled(!topic.isEmpty() &&  topics->contains(topic));
+    bool topicAlreadSub = topics->contains(topic);
+    ui->subButton->setEnabled(!topic.isEmpty()   && !topicAlreadSub);
+    ui->unsubButton->setEnabled(!topic.isEmpty() &&  topicAlreadSub);
 }
 
 void SubForm::onSubscribe()
