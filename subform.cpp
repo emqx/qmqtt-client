@@ -36,7 +36,9 @@ void SubForm::onSubscribed(const QString &topic)
 void SubForm::onUnsubscribed(const QString &topic)
 {
     if(topics->contains(topic)) {
-        ui->listWidget->removeItemWidget(topics->take(topic));
+        QListWidgetItem *item = topics->take(topic);
+        ui->listWidget->removeItemWidget(item);
+        delete item;
     }
 }
 
