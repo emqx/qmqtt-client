@@ -17,6 +17,7 @@ public:
     explicit SubForm(QWidget *parent = 0);
     ~SubForm();
     void init(QMQTT::Client *client);
+    void clearLineEdit();
 
 public slots:
     void onTopicInput(QString topic);

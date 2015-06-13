@@ -91,14 +91,14 @@
      <item>
       <widget class="QPushButton" name="subButton">
        <property name="text">
-        <string>Subscribe</string>
+        <string>&amp;Subscribe</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="unsubButton">
        <property name="text">
-        <string>Unsubscribe</string>
+        <string>U&amp;nsubscribe</string>
        </property>
       </widget>
      </item>
@@ -130,7 +130,7 @@
  <connections>
   <connection>
    <sender>topicLineEdit</sender>
-   <signal>textEdited(QString)</signal>
+   <signal>textChanged(QString)</signal>
    <receiver>SubForm</receiver>
    <slot>onTopicInput(QString)</slot>
    <hints>

@@ -15,6 +15,7 @@ class PubForm : public MqttForm
 public:
     explicit PubForm(QWidget *parent = 0);
     ~PubForm();
+    void lineEditSetFocus();
 
 public slots:
     void onPublishReady();
