@@ -10,14 +10,18 @@ MainWindow::MainWindow(QMQTT::Client *client, QWidget *parent) :
     ui->conForm->init(client);
     ui->pubForm->init(client);
     ui->subForm->init(client);
-    ui->action_Subscribe->setEnabled(false);
-    ui->action_Publish->setEnabled(false);
-    ui->action_Connect->setChecked(true);
+
+    //add pushBtuoon slots
+    connect(ui->pushButtonConnect,SIGNAL(clicked(bool)),this,SLOT(connectServer()));
+    connect(ui->pushButtonPusblish,SIGNAL(clicked(bool)),this,SLOT(publishTopic()));
+    connect(ui->pushButtonSubscribe,SIGNAL(clicked(bool)),this,SLOT(subscribeTopic()));
+    connect(ui->pushButtonQuit,SIGNAL(clicked(bool)),this,SLOT(quitApp()));
+    connect(ui->pushButtonClear,SIGNAL(clicked(bool)),this,SLOT(clearMsg()));
+    connect(ui->pushButtonAbout,SIGNAL(clicked(bool)),this,SLOT(aboutApp()));
 
     //connform slots
     connect(_client, SIGNAL(disconnected()), ui->conForm, SLOT(updateUiStatus()));
     connect(_client, SIGNAL(connected()), ui->conForm, SLOT(updateUiStatus()));
-
     //mainwindow slots
     connect(_client, SIGNAL(connected()), this, SLOT(onMQTT_Connected()));
     connect(_client, SIGNAL(connacked(quint8)), this, SLOT(onMQTT_Connacked(quint8)));
@@ -43,8 +47,7 @@ MainWindow::~MainWindow()
  -----------------------------------------------------------*/
 void MainWindow::onMQTT_Connected()
 {
-    ui->action_Publish->setEnabled(true);
-    ui->action_Subscribe->setEnabled(true);
+
     log(tr("connected to %1:%2").arg(_client->host()).arg(_client->port()));
 }
 
@@ -53,6 +56,8 @@ void MainWindow::onMQTT_Connacked(quint8 ack)
     QString ackStatus;
     switch(ack) {
     case QMQTT::CONNACK_ACCEPT:
+        ui->pushButtonPusblish->setEnabled(true);
+        ui->pushButtonSubscribe->setEnabled(true);
         ackStatus = "Connection Accepted";
         break;
     case QMQTT::CONNACK_PROTO_VER:
@@ -145,59 +150,66 @@ void MainWindow::onMQTT_Pong()
 
 void MainWindow::onMQTT_disconnected()
 {
-    ui->action_Publish->setEnabled(false);
-    ui->action_Subscribe->setEnabled(false);
+    ui->pushButtonPusblish->setEnabled(false);
+    ui->pushButtonSubscribe->setEnabled(false);
     log("disconnected");
 }
 
 /* -----------------------------------------------------------
  UI Action Slots
  -----------------------------------------------------------*/
-void MainWindow::on_action_Connect_triggered()
-{
-    clearChecked();
-    ui->action_Connect->setChecked(true);
-    ui->stackedWidget->setCurrentWidget(ui->conForm);
-}
 
-void MainWindow::on_action_Subscribe_triggered()
-{
-    clearChecked();
-    ui->action_Subscribe->setChecked(true);
-    ui->stackedWidget->setCurrentWidget(ui->subForm);
-    ui->subForm->clearLineEdit(); // also sets focus to lineEdit
-}
-
-void MainWindow::on_action_Publish_triggered()
-{
-    clearChecked();
-    ui->action_Publish->setChecked(true);
-    ui->stackedWidget->setCurrentWidget(ui->pubForm);
-    ui->pubForm->lineEditSetFocus();
-}
-
-void MainWindow::on_action_About_triggered()
-{
-    QMessageBox::information(NULL, tr("About QMQTT"),
-             tr("Version: 0.1.0\n\n"
-                 "MQTT Client written with Qt\n\n"
-                 "Site: https://www.github.com/emqtt/qmqtt-client\n"));
-}
-
-//Private Methods
-void MainWindow::clearChecked()
-{
-    ui->action_Connect->setChecked(false);
-    ui->action_Publish->setChecked(false);
-    ui->action_Subscribe->setChecked(false);
-}
 
 void MainWindow::log(const QString & msg)
 {
     ui->logConsole->append(msg);
 }
 
-void MainWindow::on_action_Quit_triggered()
+
+
+void MainWindow::quitApp()
 {
     qApp->quit();
+}
+
+void MainWindow::connectServer()
+{
+     ui->stackedWidget->setCurrentWidget(ui->conForm);
+}
+
+
+
+void MainWindow::aboutApp()
+{
+    QMessageBox::information(NULL, tr("About QMQTT"),
+             tr("Version: 0.1.1\n\n"
+                 "MQTT Client written with Qt\n\n"
+                 "Site: https://www.github.com/emqtt/qmqtt-client\n"));
+}
+
+void MainWindow::clearMsg()
+{
+    ui->logConsole->clear();
+}
+
+void MainWindow::subscribeTopic()
+{
+    ui->stackedWidget->setCurrentWidget(ui->subForm);
+    ui->subForm->clearLineEdit(); // also sets focus to lineEdit
+}
+
+void MainWindow::publishTopic()
+{
+    ui->stackedWidget->setCurrentWidget(ui->pubForm);
+    ui->pubForm->lineEditSetFocus();
+}
+
+void MainWindow::on_actionAbout_triggered()
+{
+    aboutApp();
+}
+
+void MainWindow::on_actionQuit_triggered()
+{
+    quitApp();
 }

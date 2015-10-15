@@ -7,7 +7,7 @@
 #include "connform.h"
 #include "pubform.h"
 #include "subform.h"
-
+#include <QAction>
 namespace Ui {
 class MainWindow;
 }
@@ -34,12 +34,15 @@ private slots:
     void onMQTT_Pong();
     void onMQTT_disconnected();
 
-    void on_action_Connect_triggered();
-    void on_action_Subscribe_triggered();
-    void on_action_Publish_triggered();
-    void on_action_About_triggered();
+    void on_actionAbout_triggered();
+    void on_actionQuit_triggered();
 
-    void on_action_Quit_triggered();
+    void aboutApp();
+    void publishTopic();
+    void subscribeTopic();
+    void connectServer();
+    void quitApp();
+    void clearMsg();
 
 private:
     void clearChecked();
@@ -49,6 +52,7 @@ private:
     ConnForm * _connDialog;
     PubForm * _pubDialog;
     SubForm * _subDialog;
+
 };
 
 #endif // MAINWINDOW_H

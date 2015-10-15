@@ -13,6 +13,12 @@
     <height>720</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="maximumSize">
    <size>
     <width>100000</width>
@@ -38,38 +44,96 @@
    <property name="autoFillBackground">
     <bool>true</bool>
    </property>
-   <layout class="QGridLayout" name="gridLayout">
+   <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
-     <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QStackedWidget" name="stackedWidget">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>180</height>
-         </size>
+       <widget class="QPushButton" name="pushButtonConnect">
+        <property name="text">
+         <string>Connect</string>
         </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>300</height>
-         </size>
-        </property>
-        <property name="currentIndex">
-         <number>0</number>
-        </property>
-        <widget class="ConnForm" name="conForm"/>
-        <widget class="PubForm" name="pubForm"/>
-        <widget class="SubForm" name="subForm"/>
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="pushButtonSubscribe">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Subscribe</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButtonPusblish">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Publish</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButtonClear">
+        <property name="text">
+         <string>Clear</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButtonQuit">
+        <property name="text">
+         <string>Quit</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButtonAbout">
+        <property name="text">
+         <string>About</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="1" rowspan="2">
+     <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
+      <item>
        <widget class="QGroupBox" name="groupBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="title">
          <string/>
         </property>
-        <layout class="QGridLayout" name="gridLayout_2">
+        <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
+          <widget class="QStackedWidget" name="stackedWidget">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>180</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>300</height>
+            </size>
+           </property>
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <widget class="ConnForm" name="conForm"/>
+           <widget class="PubForm" name="pubForm"/>
+           <widget class="SubForm" name="subForm"/>
+          </widget>
+         </item>
+         <item row="1" column="0">
           <widget class="QTextBrowser" name="logConsole">
            <property name="minimumSize">
             <size>
@@ -80,9 +144,24 @@
           </widget>
          </item>
         </layout>
+        <zorder>logConsole</zorder>
+        <zorder>stackedWidget</zorder>
        </widget>
       </item>
      </layout>
+    </item>
+    <item row="1" column="0">
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>495</height>
+       </size>
+      </property>
+     </spacer>
     </item>
    </layout>
   </widget>
@@ -92,8 +171,14 @@
      <x>0</x>
      <y>0</y>
      <width>860</width>
-     <height>22</height>
+     <height>23</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
    </property>
    <property name="defaultUp">
     <bool>false</bool>
@@ -102,80 +187,25 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="action_Quit"/>
+    <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="action_About"/>
+    <addaction name="actionAbout"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuHelp"/>
   </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <property name="styleSheet">
-    <string notr="true">QToolBar {background: rgb(2, 2, 2)}</string>
-   </property>
-   <property name="movable">
-    <bool>false</bool>
-   </property>
-   <property name="floatable">
-    <bool>false</bool>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>LeftToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-   <addaction name="action_Connect"/>
-   <addaction name="action_Subscribe"/>
-   <addaction name="action_Publish"/>
-   <addaction name="separator"/>
-   <addaction name="action_About"/>
-  </widget>
-  <action name="action_Quit">
+  <action name="actionQuit">
    <property name="text">
-    <string>&amp;Quit</string>
+    <string>Quit</string>
    </property>
   </action>
-  <action name="action_About">
+  <action name="actionAbout">
    <property name="text">
-    <string>&amp;About</string>
-   </property>
-  </action>
-  <action name="action_Connect">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Connect</string>
-   </property>
-   <property name="toolTip">
-    <string>Connect to MQTT Broker</string>
-   </property>
-  </action>
-  <action name="action_Subscribe">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Subscribe</string>
-   </property>
-   <property name="toolTip">
-    <string>Subscribe to Topic</string>
-   </property>
-  </action>
-  <action name="action_Publish">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Publish</string>
-   </property>
-   <property name="toolTip">
-    <string>Publish Message</string>
+    <string>About</string>
    </property>
   </action>
  </widget>
@@ -203,3 +233,4 @@
  <resources/>
  <connections/>
 </ui>
+
