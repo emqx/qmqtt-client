@@ -24,16 +24,26 @@ MainWindow::MainWindow(QMQTT::Client *client, QWidget *parent) :
     connect(_client, SIGNAL(connected()), ui->conForm, SLOT(updateUiStatus()));
     //mainwindow slots
     connect(_client, SIGNAL(connected()), this, SLOT(onMQTT_Connected()));
-    connect(_client, SIGNAL(connacked(quint8)), this, SLOT(onMQTT_Connacked(quint8)));
-    connect(_client, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(onMQTT_error(QAbstractSocket::SocketError)));
-    connect(_client, SIGNAL(published(QMQTT::Message &)), this, SLOT(onMQTT_Published(QMQTT::Message &)));
-    connect(_client, SIGNAL(pubacked(quint8, quint16)), this, SLOT(onMQTT_Pubacked(quint8, quint16)));
+
+    //todo: should emit on server suback
+    //connect(_client, SIGNAL(connacked(quint8)), this, SLOT(onMQTT_Connacked(quint8)));
+    connect(_client, SIGNAL(error(QMQTT::ClientError)), this, SLOT(onMQTT_error(QMQTT::ClientError)));
+
+    //slots changes
+    //API:  void published(const QMQTT::Message& message);
+    connect(_client,SIGNAL(published(const QMQTT::Message &)),this,SLOT(onMQTT_Published(const QMQTT::Message &)));
+
+    //todo: should emit on server suback
+    //connect(_client, SIGNAL(pubacked(quint8, quint16)), this, SLOT(onMQTT_Pubacked(quint8, quint16)));
     connect(_client, SIGNAL(received(const QMQTT::Message &)), this, SLOT(onMQTT_Received(const QMQTT::Message &)));
     connect(_client, SIGNAL(subscribed(const QString &)), this, SLOT(onMQTT_subscribed(const QString &)));
-    connect(_client, SIGNAL(subacked(quint16, quint8)), this, SLOT(onMQTT_subacked(quint16, quint8)));
+
+    //todo: should emit on server suback
+    //connect(_client, SIGNAL(subacked(quint16, quint8)), this, SLOT(onMQTT_subacked(quint16, quint8)));
     connect(_client, SIGNAL(unsubscribed(const QString &)), this, SLOT(onMQTT_unsubscribed(const QString &)));
-    connect(_client, SIGNAL(unsubacked(quint16)), this, SLOT(onMQTT_unsubacked(quint16)));
-    connect(_client, SIGNAL(pong()), this, SLOT(onMQTT_Pong()));
+    //todo: should emit on server suback
+    //connect(_client, SIGNAL(unsubacked(quint16)), this, SLOT(onMQTT_unsubacked(quint16)));
+    //connect(_client, SIGNAL(pong()), this, SLOT(onMQTT_Pong()));
     connect(_client, SIGNAL(disconnected()), this, SLOT(onMQTT_disconnected()));
 }
 
@@ -47,12 +57,18 @@ MainWindow::~MainWindow()
  -----------------------------------------------------------*/
 void MainWindow::onMQTT_Connected()
 {
-
-    log(tr("connected to %1:%2").arg(_client->host()).arg(_client->port()));
+    log(tr("connected to %1:%2").arg(_client->host().toString()).arg(_client->port()));
+    //todo: should emit on server suback
+    ui->pushButtonPusblish->setEnabled(true);
+    ui->pushButtonSubscribe->setEnabled(true);
 }
+
+
 
 void MainWindow::onMQTT_Connacked(quint8 ack)
 {
+    //todo: should emit on server suback
+    /*
     QString ackStatus;
     switch(ack) {
     case QMQTT::CONNACK_ACCEPT:
@@ -77,10 +93,16 @@ void MainWindow::onMQTT_Connacked(quint8 ack)
         break;
     }
     log(tr("connacked: %1, %2").arg(ack).arg(ackStatus));
+    */
 }
-void MainWindow::onMQTT_error(QAbstractSocket::SocketError err)
+
+
+void MainWindow::onMQTT_error(QMQTT::ClientError err)
 {
+    //todo: should emit on server suback
+    /*
     QString errInfo;
+
     switch(err) {
     // 0	The connection was refused by the peer (or timed out).
     case QAbstractSocket::ConnectionRefusedError:
@@ -103,10 +125,12 @@ void MainWindow::onMQTT_error(QAbstractSocket::SocketError err)
     default:
         errInfo = tr("Socket Error");
     }
+
     log(errInfo);
+    */
 }
 
-void MainWindow::onMQTT_Published(QMQTT::Message &message)
+void MainWindow::onMQTT_Published(const QMQTT::Message &message)
 {
     log(tr("message published to %1").arg(message.topic()));
     log(message.payload());
