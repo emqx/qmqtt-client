@@ -23,8 +23,10 @@ public:
 private slots:
     void onMQTT_Connected();
     void onMQTT_Connacked(quint8 ack);
-    void onMQTT_error(QAbstractSocket::SocketError err);
-    void onMQTT_Published(QMQTT::Message &message);
+    void onMQTT_error(QMQTT::ClientError err);
+    //slots changes
+    //API:  void published(const QMQTT::Message& message);
+    void onMQTT_Published(const QMQTT::Message &message);
     void onMQTT_Pubacked(quint8 type, quint16 msgid);
     void onMQTT_Received(const QMQTT::Message &message);
     void onMQTT_subscribed(const QString &topic);
