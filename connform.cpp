@@ -21,35 +21,52 @@ void ConnForm::onConnect()
     QString passwd = ui->lePasswd->text();
     QString willtopic = ui->leWillTopic->text();
     QString willmsg = ui->teWillMsg->toPlainText();
-    QMQTT::Will *will;
-    if(!_client->isConnected()) {
-        _client->setHost(ui->leHost->text());
+    // New API do not use.
+    //QMQTT::Will *will;
+    if(!_client->isConnectedToHost()) {
+        //changes
+        //API:  void setHost(const QHostAddress& host);
+        QHostAddress hostAdd(ui->leHost->text());
+        _client->setHost(hostAdd);
         _client->setPort(ui->sbPort->value());
         _client->setKeepAlive(ui->sbKeepalive->value());
-        _client->setCleansess(ui->cbCleanSess->isChecked());
+        //changes
+        //API:  void setCleanSession(const bool cleansess);;
+        _client->setCleanSession(ui->cbCleanSess->isChecked());
         if(!clientId.isEmpty())  _client->setClientId(clientId);
         if(!username.isEmpty()) _client->setUsername(username);
         if(!passwd.isEmpty()) _client->setPassword(passwd);
-        //FIXME: this api is not good
+        //Use directly setWillTopic and setWillMessage.
         if(!willtopic.isEmpty() && !willmsg.isEmpty()) {
-            will = new QMQTT::Will(willtopic, willmsg);
-            _client->setWill(will);
+            //New
+            //API: void setWillTopic(const QString& willTopic);
+            //API: void setWillQos(const quint8 willQos);
+            //API: void setWillRetain(const bool willRetain);
+            //API: void setWillMessage(const QString& willMessage);
+            _client->setWillTopic(willtopic);
+            _client->setWillMessage(willmsg);
         }
-        _client->connect();
+        //changes
+        //API:  void connectToHost();
+        _client->connectToHost();
     }
 }
 
 void ConnForm::onDisconnect()
 {
-    if(_client->isConnected()) {
-        //TODO: FIX LATER
-        _client->disconnect();
+    //changes
+    //API:  bool isConnectedToHost() const;
+    if(_client->isConnectedToHost()) {
+        //change disconnected() to disconnectFromHost()
+        _client->disconnectFromHost();
     }
 }
 
 void ConnForm::updateUiStatus()
 {
-    ui->connButton->setEnabled(!_client->isConnected());
-    ui->disconnButton->setEnabled(_client->isConnected());
+    //changes
+    //API:  bool isConnectedToHost() const;
+    ui->connButton->setEnabled(!_client->isConnectedToHost());
+    ui->disconnButton->setEnabled(_client->isConnectedToHost());
 }
 
