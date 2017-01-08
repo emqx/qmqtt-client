@@ -1,5 +1,4 @@
-qmqtt-client
-============
+# qmqtt-client
 
 MQTT Client GUI Written with Qt
 
@@ -34,3 +33,11 @@ export LD_LIBRARY_PATH=~/path_to_qmqtt:$LD_LIBRARY_PATH
 # run the qmqtt-client
 ./qmqtt-client
 ```
+## License
+
+LGPLv3
+
+## Author
+
+Feng Lee <feng@emqtt.io>
+
