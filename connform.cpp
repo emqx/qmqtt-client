@@ -51,7 +51,7 @@ void ConnForm::onConnect()
         _client->setCleanSession(ui->cbCleanSess->isChecked());
         if(!clientId.isEmpty())  _client->setClientId(clientId);
         if(!username.isEmpty()) _client->setUsername(username);
-		if(!passwd.isEmpty()) _client->setPassword(passwd.toUtf8());
+        if(!passwd.isEmpty()) _client->setPassword(passwd.toUtf8());
         //Use directly setWillTopic and setWillMessage.
         if(!willtopic.isEmpty() && !willmsg.isEmpty()) {
             //New
@@ -60,7 +60,7 @@ void ConnForm::onConnect()
             //API: void setWillRetain(const bool willRetain);
             //API: void setWillMessage(const QString& willMessage);
             _client->setWillTopic(willtopic);
-			_client->setWillMessage(willmsg.toUtf8());
+            _client->setWillMessage(willmsg.toUtf8());
         }
         //changes
         //API:  void connectToHost();
