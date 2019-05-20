@@ -1,0 +1,43 @@
+language: cpp
+compiler: gcc
+sudo: require
+dist: xenial
+
+before_install:
+  - sudo add-apt-repository ppa:beineri/opt-qt591-xenial -y
+  - sudo apt-get update -qq
+
+install:
+  - sudo apt-get -y install qt59base qt59tools qt59websockets libgl1-mesa-dev
+  - source /opt/qt*/bin/qt*-env.sh
+  - export CXX="g++-5"
+  - export CC="gcc-5"
+  
+script:
+  - git clone https://github.com/emqtt/qmqtt
+  - cd qmqtt/
+  - qmake CONFIG+=release
+  - make CXX=$CXX -j$(nproc)
+  - export LD_LIBRARY_PATH=
+  - sudo make -j$(nproc) install
+  - sudo mv /opt/qt*/include/qmqtt . ; sudo cp -r ./qmqtt/* /opt/qt*/include/ # FIXME; it is not found there
+  - cd ..
+  - qmake CONFIG+=release PREFIX=/usr
+  - make -j$(nproc)
+  # make INSTALL_ROOT=appdir -j$(nproc) install ; find appdir/ # FIXME
+  - mkdir -p appdir/usr/bin ; cp ./qmqtt-client ./appdir/usr/bin/
+  - mkdir -p appdir/usr/share/applications ; cp qmqtt-client.desktop appdir/usr/share/applications/ # FIXME
+  - mkdir -p appdir/usr/share/icons/hicolor/scalable/apps/ ; touch appdir/usr/share/icons/hicolor/scalable/apps/qmqtt-client.svg
+  - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+  - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
+  - unset LD_LIBRARY_PATH # needed because linuxdeployqt uses the wrong Qt otherwise
+  - ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
+
+after_success:
+  - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
+  - bash upload.sh QMQTT*.AppImage*
+  
+branches:
+  except:
+    - # Do not build tags that we create when we upload to GitHub Releases
+    - /^(?i:continuous)/
