@@ -39,5 +39,5 @@ LGPLv3
 
 ## Author
 
-Feng Lee <feng@emqtt.io>
+Feng Lee <feng@emqx.io>
 
