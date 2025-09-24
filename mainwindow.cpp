@@ -159,7 +159,7 @@ void MainWindow::onMQTT_Pubacked(quint8 type, quint16 msgid)
 
 void MainWindow::onMQTT_Received(const QMQTT::Message &message)
 {
-    log(tr("message recevied from %1: qos=%2").arg(message.topic()).arg(message.qos()));
+    log(tr("message received from %1: qos=%2").arg(message.topic()).arg(message.qos()));
     log(message.payload());
 }
 
